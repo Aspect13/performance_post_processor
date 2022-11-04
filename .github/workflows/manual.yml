@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: zipping
-      run: mkdir package && zip -r package/test_zip_stuff.zip . -x ".git/*" ".github/*" "package/*"
+      run: zip -r package/test_zip_stuff.zip . -x ".git/*" ".github/*" "package/*"
     - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
