@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+  repository_dispatch:
+    types: [make_zip]
 jobs:
   make-zip:
     runs-on: ubuntu-latest
