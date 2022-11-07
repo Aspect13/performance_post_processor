@@ -1,10 +1,13 @@
 name: zip builder
+
 on:
   push:
     branches:
       - master
   repository_dispatch:
     types: [make_zip]
+  workflow_dispatch:
+  
 jobs:
   make-zip:
     runs-on: ubuntu-latest
