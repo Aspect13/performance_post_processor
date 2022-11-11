@@ -13,12 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: collecting packages
-      run: pip3 install -r requirements.txt -t . --no-cache-dir --compile
+    - name: setting up docker builder
+      run: |
+        mkdir package/lambda
+        cp requirements.txt lambda_function.py package/lambda
+        cd package/lambda
+        docker run --rm -v "$PWD":/var/task lambci/lambda:build-python3.7 pip install -r requirements.txt -t /var/task/ --no-cache-dir --compile
+        ls -lah
     - name: zipping
-      run: zip -r -9 post_processing.zip . -x Jenkinsfile -x package/\* -x .git*
+      run: zip -r -9 post_processing.zip .
     - name: replacing package
-      run: mv post_processing.zip package/post_processing.zip
+      run: mv post_processing.zip ../post_processing.zip
     - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
