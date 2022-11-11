@@ -16,7 +16,7 @@ jobs:
     - name: collecting packages
       run: pip3 install -r requirements.txt -t .
     - name: zipping
-      run: zip post_processing.zip . -x Jenkinsfile package/\* .git* -r -9
+      run: zip post_processing.zip . -x Jenkinsfile package/\* .git* -r
     - name: replacing package
       run: mv post_processing.zip package/post_processing.zip
     - run: |
