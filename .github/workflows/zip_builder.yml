@@ -11,20 +11,23 @@ on:
 jobs:
   make-zip:
     runs-on: ubuntu-latest
+    env:
+      LAMBDA_DIR: /tmp/lambda
     steps:
     - uses: actions/checkout@v3
     - name: setting up docker builder
       run: |
-        mkdir package/lambda
-        cp requirements.txt lambda_function.py package/lambda
-        docker run --rm -v "$PWD/package/lambda":/var/task lambci/lambda:build-python3.7 pip install -r requirements.txt -t /var/task/ --no-cache-dir --compile
-        ls -lah package/lambda
+        mkdir $LAMBDA_DIR
+        cp requirements.txt lambda_function.py $LAMBDA_DIR
+        docker run --rm -v "$LAMBDA_DIR":/var/task lambci/lambda:build-python3.7 pip install -r requirements.txt -t /var/task/ --no-cache-dir --compile
     - name: zipping
       run: |
-        cd package/lambda
+        cd $LAMBDA_DIR
         zip -r -9 post_processing.zip .
     - name: replacing package
-      run: mv package/lambda/post_processing.zip package/post_processing.zip
+      run: mv $LAMBDA_DIR/post_processing.zip package/post_processing.zip
+    - name: display size
+      run: ls -lah package/
     - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
