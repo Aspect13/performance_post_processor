@@ -17,13 +17,14 @@ jobs:
       run: |
         mkdir package/lambda
         cp requirements.txt lambda_function.py package/lambda
-        cd package/lambda
-        docker run --rm -v "$PWD":/var/task lambci/lambda:build-python3.7 pip install -r requirements.txt -t /var/task/ --no-cache-dir --compile
-        ls -lah
+        docker run --rm -v "$PWD/package/lambda":/var/task lambci/lambda:build-python3.7 pip install -r requirements.txt -t /var/task/ --no-cache-dir --compile
+        ls -lah package/lambda
     - name: zipping
-      run: zip -r -9 post_processing.zip .
+      run: |
+        cd package/lambda
+        zip -r -9 post_processing.zip .
     - name: replacing package
-      run: mv post_processing.zip ../post_processing.zip
+      run: mv package/lambda/post_processing.zip package/post_processing.zip
     - run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
