@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: collecting packages
-      run: pip3 install -r requirements.txt -t . —no-cache-dir —compile
+      run: pip3 install -r requirements.txt -t . --no-cache-dir --compile
     - name: zipping
       run: zip post_processing.zip . -r -9 -x Jenkinsfile -x package/\* -x .git*
     - name: replacing package
