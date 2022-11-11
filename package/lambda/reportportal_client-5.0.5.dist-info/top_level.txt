@@ -1,2 +1,0 @@
-reportportal_client
-tests
